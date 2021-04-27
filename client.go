@@ -82,6 +82,8 @@ func (c *Client) fetchPayment(req *http.Request) (*PaymentResponse, error) {
 	return payload, nil
 }
 
+// NewIdempotenceKey generates a new V4 UUID to use as indepotency key
+// as recommended in https://yookassa.ru/developers/using-api/basics.
 func NewIdempotenceKey() (string, error) {
 	key, err := uuid.NewRandom()
 	if err != nil {

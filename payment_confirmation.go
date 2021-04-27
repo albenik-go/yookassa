@@ -15,21 +15,26 @@ const (
 
 // Request
 
-type RedirectConfirmationRequestData struct {
+type Confirmation struct {
+	Type   string `json:"type"`
+	Locale string `json:"locale,omitempty"`
+}
+
+type RedirectConfirmation struct {
 	ReturnURL string `json:"return_url"`
 	Locale    string `json:"locale,omitempty"`
 	Enforce   bool   `json:"enforce,omitempty"`
 }
 
-type redirectConfirmationRequestData struct {
+type redirectConfirmation struct {
 	Type      string `json:"type"`
 	ReturnURL string `json:"return_url"`
 	Locale    string `json:"locale,omitempty"`
 	Enforce   bool   `json:"enforce,omitempty"`
 }
 
-func (c *RedirectConfirmationRequestData) EncodeJSON() ([]byte, error) {
-	return jsoniter.Marshal(&redirectConfirmationRequestData{
+func (c *RedirectConfirmation) MarshalJSON() ([]byte, error) {
+	return jsoniter.Marshal(&redirectConfirmation{
 		Type:      ConfirmationRedirect,
 		ReturnURL: c.ReturnURL,
 		Locale:    c.Locale,
@@ -37,19 +42,14 @@ func (c *RedirectConfirmationRequestData) EncodeJSON() ([]byte, error) {
 	})
 }
 
-type SimpleConfirmationRequestData struct {
-	Type   string `json:"type"`
-	Locale string `json:"locale,omitempty"`
-}
-
 // Response
 
-type Confirmation struct {
+type ConfirmationInfo struct {
 	Type    string      `json:"type"`
 	Details interface{} `json:"details,omitempty"`
 }
 
-func (c *Confirmation) UnmarshalJSON(data []byte) error {
+func (c *ConfirmationInfo) UnmarshalJSON(data []byte) error {
 	c.Type = jsoniter.Get(data, "type").ToString()
 
 	switch c.Type {

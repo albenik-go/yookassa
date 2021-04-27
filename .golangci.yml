@@ -4,7 +4,7 @@ run:
   tests: true
   skip-dirs-use-default: true
   modules-download-mode: readonly
-  allow-parallel-runners: false
+  allow-parallel-runners: true
 
 output:
   format: colored-line-number
@@ -166,21 +166,18 @@ linters:
     - gocognit
     - godox
     - gomnd
+    - interfacer # The linter 'interfacer' is deprecated (since v1.38.0) due to: The repository of the linter has been archived by the owner.
     - lll
     - maligned
     - nlreturn
     - paralleltest
+    - scopelint # The linter 'scopelint' is deprecated (since v1.39.0) due to: The repository of the linter has been deprecated by the owner.  Replaced by exportloopref.
     - whitespace
     - wrapcheck
     - wsl
   fast: false
 
 issues:
-  exclude:
-    - "G401"
-    - "G501"
-    - "G505"
-
   exclude-rules:
     - path: _test\.go
       linters:
@@ -196,10 +193,9 @@ issues:
       linters:
         - gosec
 
-    # Exclude some staticcheck messages
-    - text: "SA9003:"
+    - text: "fieldalignment:"
       linters:
-        - staticcheck
+        - govet
 
     - source: "^//go:generate "
       linters:
